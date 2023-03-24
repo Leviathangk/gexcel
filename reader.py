@@ -66,13 +66,13 @@ class ExcelReader:
         return self._reader.sheet_names
 
     @property
-    def sheet_count(self) -> int:
+    def sheet_length(self) -> int:
         """
         返回 sheet_name 长度
 
         :return:
         """
-        return self._reader.sheet_count
+        return self._reader.sheet_length
 
 
 class XlsxReader:
@@ -131,7 +131,7 @@ class XlsxReader:
         return self.wb.sheet_names
 
     @property
-    def sheet_count(self) -> int:
+    def sheet_length(self) -> int:
         """
         返回 sheet_name 长度
 
@@ -199,7 +199,7 @@ class XlsReader:
         return []
 
     @property
-    def sheet_count(self) -> int:
+    def sheet_length(self) -> int:
         """
         返回 sheet_name 长度
 
