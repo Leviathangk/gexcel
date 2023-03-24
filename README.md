@@ -2,7 +2,7 @@
 
 一个 excel 便捷读取插入工具，有如下三个模块
 
-- ExcelReader：读取数据
+- ExcelReader：读取数据（自适应 xlsx、xls）
 - ExcelWriter：保存数据（可能会存在丢失长度问题）
 - ExcelWriterPerfect：保存数据（不会丢失）
 
@@ -15,6 +15,9 @@ pip install gexcel
 # 示例
 
 ## ExcelReader
+
+自适应 xlsx、xls  
+打开失败很大概率是文件自身的类型和后缀不符
 
 ```
 from gexcel import ExcelReader
