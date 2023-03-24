@@ -46,24 +46,33 @@ class ExcelReader:
 
         self.wb = self._reader.wb
 
-    def read_lines(self, sheetname: str = None, index: int = None):
+    def read_lines(self, sheet_name: str = None, index: int = None) -> list:
         """
         读取 sheet 的行，默认第一个 sheet
 
-        :param sheetname: 通过 名字 打开指定 sheet
+        :param sheet_name: 通过 名字 打开指定 sheet
         :param index: 通过 索引 打开指定 sheet
         :return:
         """
-        return self._reader.read_lines(sheetname=sheetname, index=index)
+        return self._reader.read_lines(sheet_name=sheet_name, index=index)
 
     @property
-    def sheetnames(self) -> List[str]:
+    def sheet_names(self) -> List[str]:
         """
-        返回所有的 sheet name
+        返回所有的 sheet_name
 
         :return:
         """
-        return self._reader.sheetnames
+        return self._reader.sheet_names
+
+    @property
+    def sheet_count(self) -> int:
+        """
+        返回 sheet_name 长度
+
+        :return:
+        """
+        return self._reader.sheet_count
 
 
 class XlsxReader:
@@ -88,21 +97,21 @@ class XlsxReader:
 
         self.wb = load_workbook(self.filepath)
 
-    def read_lines(self, sheetname: str = None, index: int = None):
+    def read_lines(self, sheet_name: str = None, index: int = None) -> list:
         """
         读取 sheet 的行，默认第一个 sheet
 
-        :param sheetname: 通过 名字 打开指定 sheet
+        :param sheet_name: 通过 名字 打开指定 sheet
         :param index: 通过 索引 打开指定 sheet
         :return:
         """
-        if sheetname:
-            sh = self.wb[sheetname]
+        if sheet_name:
+            sh = self.wb[sheet_name]
         elif index:
-            length = len(self.sheetnames)
+            length = len(self.sheet_names)
             if index >= length:
                 raise IndexError("该表格索引范围应在：0-{} 内！".format(length - 1))
-            sh = self.wb[self.sheetnames[index]]
+            sh = self.wb[self.sheet_names[index]]
         else:
             sh = self.wb.active
 
@@ -113,13 +122,22 @@ class XlsxReader:
             yield row_list
 
     @property
-    def sheetnames(self) -> List[str]:
+    def sheet_names(self) -> List[str]:
         """
-        返回所有的 sheet name
+        返回所有的 sheet_name
 
         :return:
         """
-        return self.wb.sheetnames
+        return self.wb.sheet_names
+
+    @property
+    def sheet_count(self) -> int:
+        """
+        返回 sheet_name 长度
+
+        :return:
+        """
+        return len(self.sheet_names)
 
     def __del__(self):
         self.wb.close()
@@ -147,16 +165,16 @@ class XlsReader:
 
         self.wb = xlrd.open_workbook(self.filepath)
 
-    def read_lines(self, sheetname: str = None, index: int = None):
+    def read_lines(self, sheet_name: str = None, index: int = None) -> list:
         """
         读取 sheet 的行，默认第一个 sheet
 
-        :param sheetname: 通过 名字 打开指定 sheet
+        :param sheet_name: 通过 名字 打开指定 sheet
         :param index: 通过 索引 打开指定 sheet
         :return:
         """
-        if sheetname:
-            sh = self.wb.sheet_by_name(sheetname)
+        if sheet_name:
+            sh = self.wb.sheet_by_name(sheet_name)
         elif index:
             length = len(self.wb.nsheets)
             if index >= length:
@@ -169,9 +187,9 @@ class XlsReader:
             yield sh.row_values(row_index)
 
     @property
-    def sheetnames(self) -> List[str]:
+    def sheet_names(self) -> List[str]:
         """
-        返回所有的 sheet name
+        返回所有的 sheet_name
 
         :return:
         """
@@ -179,3 +197,12 @@ class XlsReader:
         if sheets:
             return [i.name for i in self.wb.sheets()]
         return []
+
+    @property
+    def sheet_count(self) -> int:
+        """
+        返回 sheet_name 长度
+
+        :return:
+        """
+        return len(self.sheet_names)
